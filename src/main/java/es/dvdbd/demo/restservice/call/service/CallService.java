@@ -1,28 +1,28 @@
 package es.dvdbd.demo.restservice.call.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.dvdbd.demo.restservice.call.entity.Call;
+import es.dvdbd.demo.restservice.call.persistence.CallDao;
 
 @Service
 public class CallService {
 	private final static Logger logger = LoggerFactory.getLogger(CallService.class);
 	
+	@Autowired
+	private CallDao callDao;
+	
 	public List<Call> findAll() {
-		ArrayList<Call> calls = new ArrayList<Call>();
-		calls.add(new Call(1L, "Jose"));
-		calls.add(new Call(2L, "Juan"));
-		calls.add(new Call(3L, "Pedro"));
-		return calls;
+		return callDao.getAll();
 	}
 	
 	public Call findById(Long id) {
-	    return new Call(1L, "Jose");
+		return callDao.getById(id);
 	}
 	
 }
