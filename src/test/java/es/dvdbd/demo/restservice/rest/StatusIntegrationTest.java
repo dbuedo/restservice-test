@@ -1,8 +1,10 @@
 package es.dvdbd.demo.restservice.rest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -19,11 +21,14 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.http.MediaType;
 
+import es.dvdbd.demo.restservice.call.controller.CallController;
+import es.dvdbd.demo.restservice.call.entity.Call;
 import es.dvdbd.demo.restservice.monit.controller.StatusController;
 import es.dvdbd.demo.restservice.monit.entity.Status;
 
-public class IntegrationTest {
+public class StatusIntegrationTest {
 	private static HttpServer httpServer;
     private static WebTarget webTarget;
     private static final URI baseUri = URI.create("http://localhost:9090/restservice/");
@@ -47,9 +52,9 @@ public class IntegrationTest {
 
     @Test
     public void testGetStatus() {
-        Response response = webTarget.path("/status")
+        Response response = webTarget.path("status")
         						.request()
-        						.accept("application/json")
+        						.accept(MediaType.APPLICATION_JSON_VALUE)
         						.get();
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         
@@ -57,14 +62,23 @@ public class IntegrationTest {
         assertEquals("Rest Service OK", statusEntity.getStatus()); 
     }
     
+    @Test
+    public void testGetStatusNotFound() {
+    	Response response = webTarget.path("statusnotfound")
+				.request()
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.get();
+    	assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+    }
 
     @Test
-    public void testPostStatus() {
-        Response response = webTarget.path("/status")
+    public void testPostStatusNotAllowed() {
+        Response response = webTarget.path("status")
         						.request()
-        						.accept("application/json")
+        						.accept(MediaType.APPLICATION_JSON_VALUE)
         						.post(Entity.json(null));
-        System.out.println(response.getStatus());
-        assertEquals(response.getStatus(), Response.Status.METHOD_NOT_ALLOWED.getStatusCode());
+        assertEquals(Response.Status.METHOD_NOT_ALLOWED.getStatusCode(), response.getStatus());
     }
+
+
 }
