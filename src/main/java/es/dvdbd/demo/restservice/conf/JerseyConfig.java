@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 
 import es.dvdbd.demo.restservice.call.controller.CallController;
+import es.dvdbd.demo.restservice.error.ServerExceptionMapper;
 import es.dvdbd.demo.restservice.monit.controller.StatusController;
 
 
@@ -17,5 +18,7 @@ public class JerseyConfig extends ResourceConfig {
     	logger.info("loading JerseyConfig");
         register(StatusController.class);
         register(CallController.class);
+        
+        register(ServerExceptionMapper.class);
     }
 }

@@ -26,10 +26,10 @@ public class StatusControllerTest extends JerseyTest {
         						.request()
         						.accept(MediaType.APPLICATION_JSON_VALUE)
         						.get();
-        assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         
         Status statusEntity = response.readEntity(Status.class);
-        assertEquals(statusEntity.getStatus(), "Rest Service OK"); 
+        assertEquals("Rest Service OK", statusEntity.getStatus()); 
     }
     
 
@@ -39,6 +39,6 @@ public class StatusControllerTest extends JerseyTest {
         						.request()
         						.accept(MediaType.APPLICATION_JSON_VALUE)
         						.post(Entity.json(null));
-        assertEquals(response.getStatus(), Response.Status.METHOD_NOT_ALLOWED.getStatusCode());
+        assertEquals(Response.Status.METHOD_NOT_ALLOWED.getStatusCode(), response.getStatus());
     }
 }

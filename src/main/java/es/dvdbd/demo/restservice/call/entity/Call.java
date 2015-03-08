@@ -3,8 +3,10 @@ package es.dvdbd.demo.restservice.call.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="calls")
 public class Call {
 	
 	@Id @GeneratedValue
@@ -13,6 +15,11 @@ public class Call {
 	
 	public Call() {
 		
+	}
+	
+	public Call(String caller) {
+		super();
+		this.caller = caller;
 	}
 	
 	public Call(Long id, String caller) {

@@ -51,10 +51,10 @@ public class IntegrationTest {
         						.request()
         						.accept("application/json")
         						.get();
-        assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         
         Status statusEntity = response.readEntity(Status.class);
-        assertEquals(statusEntity.getStatus(), "Rest Service OK"); 
+        assertEquals("Rest Service OK", statusEntity.getStatus()); 
     }
     
 

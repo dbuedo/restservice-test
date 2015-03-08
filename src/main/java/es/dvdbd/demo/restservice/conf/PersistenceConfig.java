@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -31,6 +33,28 @@ public class PersistenceConfig {
 
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
+		if(isEmbeddedDatasource()) {
+			return embeddedDatasource();
+		} else {
+			return defaultDatasource();
+		}
+	}
+	
+	private boolean isEmbeddedDatasource() {
+		return Boolean.valueOf(env.getProperty("embedded.datasource"));
+	}
+
+	private DataSource embeddedDatasource() {
+		logger.debug("loading embedded datasource");
+		return new EmbeddedDatabaseBuilder()
+		    .setType(EmbeddedDatabaseType.HSQL)
+		    .addScript("classpath:sql/schema.sql")
+		    .addScript("classpath:sql/data.sql")
+		    .build();
+	}
+
+	private DataSource defaultDatasource() {
+		logger.debug("loading default datasource");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
 		dataSource.setUrl(env.getProperty("jdbc.url"));

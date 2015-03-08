@@ -3,8 +3,10 @@ package es.dvdbd.demo.restservice.call.persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,17 +26,15 @@ public class CallDaoImpl implements CallDao {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Call getById(Long id) {
-		String hql = "SELECT c FROM Call c where id=" + id;
-        Query query = manager.createQuery(hql);
-        
-        List<Call> listCall = (List<Call>) query.getResultList();
-   
-        if (listCall != null && !listCall.isEmpty()) {
-            return listCall.get(0);
-        }         
-        return null;
+		try {
+			String ql = "SELECT c FROM Call c WHERE c.id = :id";
+	        TypedQuery<Call> query = manager.createQuery(ql, Call.class);
+	        query.setParameter("id", id);
+	        return query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	@Override

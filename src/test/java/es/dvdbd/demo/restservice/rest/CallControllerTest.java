@@ -30,7 +30,7 @@ public class CallControllerTest extends JerseyTest {
         						.request()
         						.accept(MediaType.APPLICATION_JSON_VALUE)
         						.get();
-        assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         
         List<Call> callsEntity = (List<Call>) response.readEntity(List.class);
         
@@ -43,10 +43,10 @@ public class CallControllerTest extends JerseyTest {
         						.request()
         						.accept(MediaType.APPLICATION_JSON_VALUE)
         						.get();
-        assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         
         Call callEntity = response.readEntity(Call.class);        
-        assertEquals(callEntity.getId(), Long.valueOf(1)); 
+        assertEquals(Long.valueOf(1), callEntity.getId()); 
     }
     
     
