@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
@@ -23,7 +24,7 @@ public class CallControllerTest extends JerseyTest {
 	protected Application configure() {
 		return new ResourceConfig(CallController.class);
 	}
-
+	
     @Test
     public void testGetAllCalls() {
         Response response = target("call")
